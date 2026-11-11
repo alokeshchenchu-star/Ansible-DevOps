@@ -1,0 +1,50 @@
+---
+- name: Git installation on RHEL Server
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Git Installation 
+      amazon.builtin.dnf: 
+        name: git 
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Verify Git Installation
+      ansible.builtin.command: git ----version
+      register: git_version_output
+      changed_when: false
+
+    - name: Display Git Version
+      ansible.builtin.debug:
+        var: git_version_output.stdout 
+
+# ---
+# - name: Install Git on Remote Servers
+#   hosts: all
+#   become: true
+#   tasks:
+
+#     - name: Ensure Git is installed (RedHat/CentOS/Amazon Linux)
+#       amazon.builtin.dnf:
+#         name: git
+#         state: present
+#       when: ansible_os_family == "RedHat"
+
+#     - name: Ensure Git is installed (Ubuntu/Debian)
+#       ansible.builtin.apt:
+#         name: git
+#         state: present
+#         update_cache: true
+#       when: ansible_os_family == "Debian"
+
+#     - name: Verify Git installation
+#       ansible.builtin.command: git --version
+#       register: git_version_output
+#       changed_when: false
+
+#     - name: Display Git version
+#       ansible.builtin.debug:
+#         var: git_version_output.stdout
+
+
